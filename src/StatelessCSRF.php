@@ -15,7 +15,7 @@ final class StatelessCSRF {
 
   public function __construct(string $secret_key, int $ttl = null) {
     $this->key = $secret_key;
-    if ($ttl) {
+    if ($ttl !== NULL) {
       $this->setExpiration($ttl);
     }
   }
