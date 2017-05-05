@@ -1,6 +1,6 @@
 {
     "name": "ayesh/stateless-csrf",
-    "description": "Stateless CSRF protection library for PHP 7.",
+    "description": "Stateless CSRF protection library for PHP 7+",
     "type": "library",
     "keywords": [
         "form",
