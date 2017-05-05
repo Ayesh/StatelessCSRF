@@ -1,2 +1,5 @@
 # StatelessCSRF
-Stateless CSRF library for PHP 7.
+Secret-key based state-less CSRF token generator and validator for PHP 7. State-less means you do not have to store the CSRF token in session or database. 
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/?branch=master)  [![Code Coverage](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/?branch=master)  [![Build Status](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/build-status/master)  [![Packagist](https://img.shields.io/packagist/v/ayesh/stateless-csrf.svg)](https://packagist.org/packages/ayesh/stateless-csrf) [![license](https://img.shields.io/github/license/Ayesh/StatelessCSRF.svg)](https://github.com/Ayesh/StatelessCSRF) [![Badges](https://img.shields.io/badge/badges-too_many-brightgreen.svg?style=flat)]()
+

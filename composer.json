@@ -1,6 +1,6 @@
 {
     "name": "ayesh/stateless-csrf",
-    "description": "Stateless CSRF protection library for PHP 7+",
+    "description": "Secret-key based state-less CSRF token generator and validator for PHP 7. State-less means you do not have to store the CSRF token in session or database.",
     "type": "library",
     "keywords": [
         "form",
