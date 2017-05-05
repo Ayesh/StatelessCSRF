@@ -46,25 +46,24 @@ final class StatelessCSRF {
     $this->provided_token = $token;
   }
 
+  private function decodeKey(string $provided_key) {
+    $data = base64_decode($provided_key);
+    $data = json_decode($data, true);
+
+    if (!is_array($data) || json_last_error()) {
+      return false;
+    }
+    return $data;
+  }
+
   public function validate(): bool {
     if (!$this->provided_token || !$this->provided_key) {
       throw new \BadMethodCallException('Attempting to validate without setting the key and token.');
     }
 
-    $data = base64_decode($this->provided_key);
-    $data = json_decode($data, true);
-    if (json_last_error()) {
+    $data = $this->decodeKey($this->provided_key);
+    if ($data === false) {
       return false;
-    }
-
-    if (!is_array($data)) {
-      return false;
-    }
-
-    foreach ($this->data as $key => $datum) {
-      if (!is_string($datum)) {
-        return false;
-      }
     }
 
     $this->data = $data;
