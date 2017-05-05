@@ -55,10 +55,7 @@ final class StatelessCSRF {
   private function generateKey(array $data = [], int $expiration): string {
     $output = [];
     $output[] = json_encode($data);
-
-    if ($expiration) {
-      $output[] = $expiration;
-    }
+    $output[] = $expiration;
 
     if (empty($expiration) && empty($data)) {
       throw new \BadMethodCallException('Attempting to generate key without setting data.');
@@ -87,15 +84,12 @@ final class StatelessCSRF {
     $this->provided_data = [];
     $data = $this->urlSafeBase64Decode($provided_key);
     $data = explode('|', $data);
-    if (count($data) < 2) {
+    if (count($data) !== 3) {
       return false;
     }
     $return = [];
     $return['hash'] = array_pop($data);
-    $return['expire'] = 0;
-    if (count($data) > 1) {
-      $return['expire'] = array_pop($data);
-    }
+    $return['expire'] = array_pop($data);
     $return['data'] = json_decode($data[0], true);
 
     // @codeCoverageIgnoreStart
