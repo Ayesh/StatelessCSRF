@@ -19,10 +19,14 @@
         "ayesh/php-timer": "^1.1"
     },
     "autoload": {
-        "Ayesh\\StatelessCSRF\\": "src/"
+        "psr-4": {
+            "Ayesh\\StatelessCSRF\\": "src/"
+        }
     },
     "autoload-dev": {
-        "Ayesh\\StatelessCSRF\\Tests\\": "tests/"
+        "psr-4": {
+            "Ayesh\\StatelessCSRF\\Tests\\": "tests/"
+        }
     },
     "license": "MIT",
     "authors": [
