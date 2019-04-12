@@ -12,11 +12,11 @@
         "netsec"
     ],
     "require": {
-        "php": "^7"
+        "php": "^7.3",
+        "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.1",
-        "ayesh/php-timer": "^1.1"
+        "phpunit/phpunit": "^8.1"
     },
     "autoload": {
         "psr-4": {
