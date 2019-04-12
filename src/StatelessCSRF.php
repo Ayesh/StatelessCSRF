@@ -3,21 +3,13 @@
 namespace Ayesh\StatelessCSRF;
 
 final class StatelessCSRF {
-  const HASH_ALGO = 'sha256';
+  private const HASH_ALGO = 'sha256';
 
   private $key;
-
   private $data = [];
-  private $ttl = 0;
 
-  private $provided_token;
-  private $provided_data = [];
-
-  public function __construct(string $secret_key, int $ttl = null) {
+  public function __construct(string $secret_key) {
     $this->key = $secret_key;
-    if ($ttl !== NULL) {
-      $this->setExpiration($ttl);
-    }
   }
 
   private function urlSafeBase64Encode(string $input): string {
@@ -29,98 +21,55 @@ final class StatelessCSRF {
     return base64_decode(strtr($input, '-_', '+/'));
   }
 
-  public function setExpiration(int $ttl_seconds = 0) {
-    if ($ttl_seconds < 0) {
-      throw new \InvalidArgumentException('TTL should be negative.');
-    }
-    $this->ttl = $ttl_seconds;
-    return $this;
+  public function setGlueData(string $key, string $value): void {
+		$this->data[$key] = $value;
   }
 
-  public function addData(string $data, string $key = null) {
-    if (null === $key) {
-      $this->data[] = $data;
-    }
-    else {
-      $this->data[$key] = $data;
-    }
-
-    return $this;
-  }
-
-  public function resetData() {
+  public function resetGlue(): void {
     $this->data = [];
   }
 
-  private function generateKey(array $data = [], int $expiration): string {
-    $output = [];
-    $output[] = json_encode($data);
-    $output[] = $expiration;
-
-    if (empty($expiration) && empty($data)) {
-      throw new \BadMethodCallException('Attempting to generate key without setting data.');
-    }
-
-    return implode('|', $output);
+  public function getToken(string $identifier, int $expiration = null): string {
+	  $seed = $this->getRandomSeed();
+  	$hash = $this->generateHash($identifier, $seed, $expiration, $this->data);
+  	return $this->urlSafeBase64Encode($seed . '|'. $expiration . '|' . $hash);
   }
 
-  private function generateHash(string $input): string {
-    return hash_hmac(self::HASH_ALGO, $input, $this->key, false);
+  private function generateHash(string $identifier, string $random_seed, int $expiration = null, array $data = []): string {
+  	if (null === $expiration) {
+  		$expiration = '';
+	  }
+  	$identifier = $this->urlSafeBase64Encode($identifier);
+  	$props = [$identifier, $expiration, json_encode($data), $random_seed];
+  	return $this->urlSafeBase64Encode(hash_hmac(static::HASH_ALGO, implode('|', $props), $this->key, true));
   }
 
-  public function getToken(): string {
-    $expiration = $this->ttl ? time() + $this->ttl : 0;
-    $data = $this->generateKey($this->data, $expiration);
-    $hash = $this->generateHash($data);
-    return $this->urlSafeBase64Encode($data . '|' . $hash);
+  private function getRandomSeed(): string {
+  	return $this->urlSafeBase64Encode(random_bytes(8));
   }
 
-  public function setToken(string $token) {
-    $this->provided_token = $token;
-    return $this;
-  }
+  public function validate(string $identifier, string $provided_token, int $current_time = null): bool {
+  	$provided_token = $this->urlSafeBase64Decode($provided_token);
+  	if (!$provided_token) {
+  		return false;
+	  }
 
-  private function decodeKey(string $provided_key) {
-    $this->provided_data = [];
-    $data = $this->urlSafeBase64Decode($provided_key);
-    $data = explode('|', $data);
-    if (count($data) !== 3) {
-      return false;
-    }
-    $return = [];
-    $return['hash'] = array_pop($data);
-    $return['expire'] = array_pop($data);
-    $return['data'] = json_decode($data[0], true);
+		$parts = explode('|', $provided_token, 3);
+		if (count($parts) !== 3) {
+			return false;
+		}
 
-    // @codeCoverageIgnoreStart
-    if (!is_array($return['data']) || json_last_error()) {
-      return false;
-    }
-    // @codeCoverageIgnoreEnd
+		if ($parts[1] === '') {
+			$expiration = null;
+		}
+		elseif (!is_numeric($parts[1]) || $current_time > $parts[1]) {
+			return false;
+		}
+		else {
+			$expiration = (int) $parts[1];
+		}
 
-    $this->provided_data = $return['data'];
-    return $return;
-  }
-
-  public function validate(): bool {
-    if (!$this->provided_token) {
-      throw new \BadMethodCallException('Attempting to validate without setting the key and token.');
-    }
-
-    $data = $this->decodeKey($this->provided_token);
-    if ($data === false) {
-      return false;
-    }
-    if ($data['expire'] && time() > $data['expire']) {
-      return false;
-    }
-
-    $key = $this->generateKey($data['data'], $data['expire']);
-    $hash = $this->generateHash($key);
-    return hash_equals($hash, $data['hash']);
-  }
-
-  public function getData(): array {
-    return $this->provided_data;
+	  $hash = $this->generateHash($identifier, $parts[0], $expiration, $this->data);
+	  return hash_equals($hash, $parts[2]);
   }
 }
