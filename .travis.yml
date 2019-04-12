@@ -2,10 +2,9 @@ language: php
 php:
   - 7.3
   - nightly
-#matrix:
-#  allow_failures:
-#    - php: hhvm
-#    - php: nightly
+matrix:
+  allow_failures:
+    - php: nightly
 
 before_script:
   - composer self-update
