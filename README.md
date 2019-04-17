@@ -1,4 +1,7 @@
 # Stateless CSRF - Secret-key based Cross-Site-Request Forgery Protection tokens
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/?branch=master)  [![Code Coverage](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/?branch=master)  [![Build Status](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Ayesh/StatelessCSRF/build-status/master)  [![Packagist](https://img.shields.io/packagist/v/ayesh/stateless-csrf.svg)](https://packagist.org/packages/ayesh/stateless-csrf) [![license](https://img.shields.io/github/license/Ayesh/StatelessCSRF.svg)](https://github.com/Ayesh/StatelessCSRF) [![Badges](https://img.shields.io/badge/badges-too_many-brightgreen.svg?style=flat)]()
+
 `ayesh/stateless-csrf` is PHP library that generates and validates stateless CSRF-protection tokens. This means the generated tokens are not stored in a database or disk on the server. Instead, a combination of a secret key (that only the server knows) and clues to identify a browser are used.
 
 Because we do not generated or validated tokens, this library does _not_ provide protection against replay attacks.
