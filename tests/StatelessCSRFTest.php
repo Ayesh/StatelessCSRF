@@ -104,4 +104,11 @@ class StatelessCSRFTest extends TestCase {
 		$this->assertTrue($validator->validate($id, $token, $time));
 		$this->assertTrue($validator->validate($id, $token, $time + 3600));
 	}
+
+	public function testDebugInfoLeakNoSecret(): void {
+		$secret_key = bin2hex(random_bytes(8));
+		$generator = new StatelessCSRF($secret_key);
+		$val = print_r($generator, true);
+		$this->assertStringNotContainsString($secret_key, $val);
+	}
 }

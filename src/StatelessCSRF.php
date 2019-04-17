@@ -72,4 +72,10 @@ final class StatelessCSRF {
 	  $hash = $this->generateHash($identifier, $parts[0], $expiration, $this->data);
 	  return hash_equals($hash, $parts[2]);
   }
+
+  public function __debugInfo(): array {
+	  return [
+	  	'data' => $this->data,
+	  ];
+  }
 }
