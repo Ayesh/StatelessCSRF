@@ -12,6 +12,15 @@ class StatelessCSRFTest extends TestCase {
   	$this->assertInstanceOf(StatelessCSRF::class, $instance);
   }
 
+  public function testStatelessNoGlue(): void {
+  	$key = bin2hex(random_bytes(8));
+  	$generator = new StatelessCSRF($key);
+  	$validator = new StatelessCSRF($key);
+
+  	$id = bin2hex(random_bytes(8));
+  	$this->assertTrue($validator->validate($id, $generator->getToken($id)));
+  }
+
 	/**
 	 * @dataProvider getValidationDataSet
 	 *
