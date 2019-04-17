@@ -4,7 +4,7 @@
 
 `ayesh/stateless-csrf` is PHP library that generates and validates stateless CSRF-protection tokens. This means the generated tokens are not stored in a database or disk on the server. Instead, a combination of a secret key (that only the server knows) and clues to identify a browser are used.
 
-Because we do not generate or validate tokens, this library does _not_ provide protection against replay attacks.
+Because we do not store the generated tokens, this library does _not_ provide protection against replay attacks.
 
 ## Requirements
  - PHP 7.3 or later. 
