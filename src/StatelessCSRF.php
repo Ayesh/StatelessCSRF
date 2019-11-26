@@ -2,7 +2,7 @@
 
 namespace Ayesh\StatelessCSRF;
 
-final class StatelessCSRF {
+class StatelessCSRF {
 
 	private const HASH_ALGO = 'sha256';
 
