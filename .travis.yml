@@ -1,6 +1,7 @@
 language: php
 php:
   - 7.3
+  - 7.4
   - nightly
 matrix:
   allow_failures:
@@ -8,6 +9,6 @@ matrix:
 
 before_script:
   - composer self-update
-  - travis_retry composer install --prefer-source --no-interaction
+  - travis_retry composer install --prefer-dist --no-interaction
 script:
   - vendor/bin/phpunit
