@@ -7,7 +7,7 @@
 Because we do not store the generated tokens, this library does _not_ provide protection against replay attacks.
 
 ## Requirements
- - PHP 7.3 or later. 
+ - PHP 7.4 or later. 
  - PHP built-in extensions: Hash and JSON (available unless PHP is compiled manually without these extensions). 
  
 ## Features
@@ -32,7 +32,7 @@ Before the library can generate tokens, it must be fed with a secret key. This k
 ```php
 <?php 
 
-use Ayesh\StatelessCSRF;
+use Ayesh\StatelessCSRF\StatelessCSRF;
 
 $csrf_generator = new StatelessCSRF('your-secret-key-here');
 $token = $csrf_generator->getToken('unique-id-for-key');
@@ -51,7 +51,7 @@ Because this library does not provide replay attack protection, an expiration ti
 ```php
 <?php 
 
-use Ayesh\StatelessCSRF;
+use Ayesh\StatelessCSRF\StatelessCSRF;
 
 $csrf_generator = new StatelessCSRF('your-secret-key-here');
 $token = $csrf_generator->getToken('unique-id-for-key', time() + 3600); // Expires in an hour.
@@ -71,7 +71,7 @@ You can use any value that uniquely identifies a user. User-agent string provide
 ```php
 <?php 
 
-use Ayesh\StatelessCSRF;
+use Ayesh\StatelessCSRF\StatelessCSRF;
 
 $csrf_generator = new StatelessCSRF('your-secret-key-here');
 $csrf_generator->setGlueData('ip', $_SERVER['REMOTE_ADDR']);
@@ -88,6 +88,9 @@ In the validator instance, the same set of glue values must be set, and set in t
 
 ### Example with Slim PHP Framework
 ```php
+
+use Ayesh\StatelessCSRF\StatelessCSRF;
+
 $container['csrf'] = static function (Container $container): StatelessCSRF {
 	$settings = $container->get('settings');
 	$csrf = new StatelessCSRF($settings['secret_key']);
