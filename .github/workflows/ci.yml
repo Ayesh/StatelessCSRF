@@ -17,9 +17,6 @@ jobs:
           - windows-latest
 
         php:
-          - "7.1"
-          - "7.2"
-          - "7.3"
           - "7.4"
           - "8.0"
 
@@ -31,8 +28,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, tokenizer
-          ini-values: assert.exception=1, zend.assertions=1
+          extensions: mbstring, xdebug
 
       - name: Install composer dependencies ignoring platform requirements
         if: matrix.php == '8.0'
@@ -43,7 +39,4 @@ jobs:
         run: composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-
-      - name: Run a lightweight benchmark
-        run: php tests/benchmark.php
+        run: vendor/bin/phpunit
