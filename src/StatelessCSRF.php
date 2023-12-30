@@ -16,8 +16,7 @@ use function rtrim;
 use function strtr;
 
 class StatelessCSRF {
-
-    private const HASH_ALGO = 'sha256';
+    private const string HASH_ALGO = 'sha256';
 
     private string $key;
     private array $data = [];
