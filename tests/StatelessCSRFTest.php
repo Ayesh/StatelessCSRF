@@ -1,9 +1,12 @@
-<?php /** @noinspection PhpUnhandledExceptionInspection */
+<?php
 
 namespace Ayesh\StatelessCSRF\Tests;
 
 use Ayesh\StatelessCSRF\StatelessCSRF;
+use Exception;
 use PHPUnit\Framework\TestCase;
+use Random\RandomException;
+
 use function bin2hex;
 use function random_bytes;
 use function time;
@@ -15,6 +18,9 @@ class StatelessCSRFTest extends TestCase {
         $this->assertInstanceOf(StatelessCSRF::class, $instance);
     }
 
+    /**
+     * @throws RandomException
+     */
     public function testStatelessNoGlue(): void {
         $key       = bin2hex(random_bytes(8));
         $generator = new StatelessCSRF($key);
@@ -57,7 +63,7 @@ class StatelessCSRFTest extends TestCase {
      * @param  string  $value
      * @param  string  $id
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testSeparateInstanceValidation(string $key, string $value, string $id): void {
         $secret_key = bin2hex(random_bytes(8));
@@ -92,7 +98,7 @@ class StatelessCSRFTest extends TestCase {
      * @param  string  $value
      * @param  string  $id
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testTokenExpiration(string $key, string $value, string $id): void {
         $secret_key = bin2hex(random_bytes(8));
@@ -110,6 +116,9 @@ class StatelessCSRFTest extends TestCase {
         $this->assertTrue($validator->validate($id, $token, $time + 3600));
     }
 
+    /**
+     * @throws RandomException
+     */
     public function testDebugInfoLeakNoSecret(): void {
         $secret_key = bin2hex(random_bytes(8));
         $generator  = new StatelessCSRF($secret_key);

@@ -2,6 +2,8 @@
 
 namespace Ayesh\StatelessCSRF;
 
+use Random\RandomException;
+
 use function base64_decode;
 use function base64_encode;
 use function count;
@@ -40,14 +42,19 @@ class StatelessCSRF {
         $this->data = [];
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function getToken(string $identifier, int $expiration = null): string {
         $seed = $this->getRandomSeed();
         $hash = $this->generateHash($identifier, $seed, $expiration, $this->data);
         return $this->urlSafeBase64Encode($seed . '|' . $expiration . '|' . $hash);
     }
 
+    /**
+     * @throws RandomException
+     */
     private function getRandomSeed(): string {
-        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->urlSafeBase64Encode(random_bytes(8));
     }
 
