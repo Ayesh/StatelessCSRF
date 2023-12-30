@@ -1,6 +1,6 @@
 {
     "name": "ayesh/stateless-csrf",
-    "description": "Secret-key based state-less CSRF token generator and validator for PHP 7. State-less means you do not have to store the CSRF token in session or database.",
+    "description": "Secret-key based state-less CSRF token generator and validator for PHP 8. State-less means you do not have to store the CSRF token in session or database.",
     "type": "library",
     "keywords": [
         "form",
@@ -12,11 +12,11 @@
         "netsec"
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.3",
         "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.1"
+        "phpunit/phpunit": "^10.5.5"
     },
     "autoload": {
         "psr-4": {
@@ -32,7 +32,7 @@
     "authors": [
         {
             "name": "Ayesh Karunaratne",
-            "email": "ayesh@ayesh.me"
+            "email": "ayesh@aye.sh"
         }
     ]
 }

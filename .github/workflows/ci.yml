@@ -1,6 +1,7 @@
 on:
   - pull_request
   - push
+  - workflow_dispatch
 
 name: CI
 
@@ -17,25 +18,20 @@ jobs:
           - windows-latest
 
         php:
-          - "7.4"
-          - "8.0"
+          - "8.3"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, xdebug
-
-      - name: Install composer dependencies ignoring platform requirements
-        if: matrix.php == '8.0'
-        run: composer install --no-ansi --no-interaction --no-progress --ignore-platform-reqs
+          coverage: pcov
 
       - name: Install composer dependencies
-        if: matrix.php != '8.0'
         run: composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
