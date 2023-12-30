@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.1/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         forceCoversAnnotation="false"
-         beStrictAboutCoversAnnotation="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         colors="true"
-         verbose="true">
-    <testsuite name="main">
-        <directory suffix="Test.php">tests</directory>
-    </testsuite>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="coverage-html" target="build/logs/html"/>
-        <!--<log type="coverage-clover" target="build/logs/clover.xml"/>-->
-    </logging>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="vendor/autoload.php" beStrictAboutOutputDuringTests="true" colors="true" cacheDirectory=".phpunit.cache" requireCoverageMetadata="false" beStrictAboutCoverageMetadata="true">
+  <coverage>
+    <report>
+      <html outputDirectory="build/logs/html"/>
+      <text outputFile="php://stdout"/>
+    </report>
+  </coverage>
+  <testsuite name="main">
+    <directory suffix="Test.php">tests</directory>
+  </testsuite>
+  <source>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </source>
 </phpunit>

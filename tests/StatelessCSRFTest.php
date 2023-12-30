@@ -40,7 +40,7 @@ class StatelessCSRFTest extends TestCase {
         $instance->validate($id, $result, time());
     }
 
-    public function getValidationDataSet(): array {
+    public static function getValidationDataSet(): array {
         return [
           ['foo', 'bar', 'id'],
           ['foo', 'foo', 'foo'],
