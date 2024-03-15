@@ -45,7 +45,7 @@ class StatelessCSRF {
     /**
      * @throws \JsonException
      */
-    public function getToken(string $identifier, int $expiration = null): string {
+    public function getToken(string $identifier, ?int $expiration = null): string {
         $seed = $this->getRandomSeed();
         $hash = $this->generateHash($identifier, $seed, $expiration, $this->data);
         return $this->urlSafeBase64Encode($seed . '|' . $expiration . '|' . $hash);
@@ -66,7 +66,7 @@ class StatelessCSRF {
     private function generateHash(
       string $identifier,
       string $random_seed,
-      int $expiration = null,
+      ?int $expiration = null,
       array $data = []
     ): string {
         if (null === $expiration) {
@@ -80,7 +80,7 @@ class StatelessCSRF {
         return $this->urlSafeBase64Encode(hash_hmac(static::HASH_ALGO, implode('|', $props), $this->key, true));
     }
 
-    public function validate(string $identifier, string $provided_token, int $current_time = null): bool {
+    public function validate(string $identifier, string $provided_token, ?int $current_time = null): bool {
         $provided_token = $this->urlSafeBase64Decode($provided_token);
         if (!$provided_token) {
             return false;
